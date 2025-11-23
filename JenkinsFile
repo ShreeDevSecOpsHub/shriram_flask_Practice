@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    
+    environment {
+        // Optional: Define app name
+        APP_NAME = "flask-practice"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    pytest tests/ -v --junitxml=report.xml || exit 0
+                '''
+                junit 'report.xml'  // Shows results in Jenkins UI
+            }
+        }
+
+        stage('Deploy to Staging') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Deploying to Staging Environment..."
+                sh '''
+                    . venv/bin/activate
+                    # Kill old process if running
+                    pkill -f "python3 app.py" || true
+                    nohup python3 app.py > app.log 2>&1 &
+                    echo "Flask app deployed on http://$(hostname -I | awk '{print $1}'):5000"
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()  // Clean workspace
+        }
+        success {
+            echo "Pipeline succeeded! Flask app is running."
+            mail to: "your-email@example.com",
+                 subject: "Jenkins Build Successful: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                 body: "Build, Test & Deployment completed successfully.\n\nCheck: ${env.BUILD_URL}"
+        }
+        failure {
+            mail to: "your-email@example.com",
+                 subject: "Jenkins Build FAILED: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                 body: "Something went wrong.\n\nCheck: ${env.BUILD_URL}"
+        }
+    }
+}
