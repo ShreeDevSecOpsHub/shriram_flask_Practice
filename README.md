@@ -53,7 +53,7 @@
  
    After forking, the repository was cloned to the Jenkins server using:
 
-   git clone https://github.com/imran7012/flask_Practice.git
+   git clone https://github.com/ShreeDevSecOpsHub/shriram_flask_Practice.git
 
 ---
 
@@ -61,7 +61,6 @@
 
   ## Create a Jenkinsfile in the root of your Python application repository.
 
-<img width="1320" height="826" alt="image" src="https://github.com/user-attachments/assets/c9ff6007-4c79-4496-b2c7-85f4aadb6a10" />
 
 
 ## Define a pipeline with the following stages:
@@ -158,6 +157,7 @@
 
 
     
+
 
 
 
