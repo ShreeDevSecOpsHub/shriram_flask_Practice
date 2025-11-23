@@ -1,133 +1,96 @@
-# Student Registration System
+## 2. GitHub Actions CI/CD for Flask Application:
 
-A simple **Flask** web application to manage student records with **MongoDB** as the backend database. Users can **add, view, update, and delete** student details.
+  ## GitHub Actions Workflow:
+  
+    ├── app/
+    │ └── __init__.py
+    │ └── main.py
+    ├── tests/
+    │ └── test_example.py
+    ├── requirements.txt
+    ├── .github/
+    │ └── workflows/
+    │ └── ci-cd.yml
+    └── README.md
 
----
-
-## Features
-
-* List all students on the home page
-* Add a new student
-* Update existing student details
-* Delete a student with confirmation
-* Simple and responsive UI using Bootstrap
-
----
-
-## Tech Stack
-
-* **Backend:** Python, Flask
-* **Database:** MongoDB (via Flask-PyMongo)
-* **Frontend:** HTML, Jinja2 templates, Bootstrap 5
-* **Environment Variables:** Managed via `.env` file
-
----
-
-## Setup Instructions
-
-### 1. Clone the repository
-
-```bash
-git clone <your-repo-url>
-cd <repo-folder>
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
-python -m venv venv
-# Activate venv
-# Windows:
-venv\Scripts\activate
-# Linux / Mac:
-source venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-**`requirements.txt` example:**
-
-```
-Flask
-Flask-PyMongo
-python-dotenv
-bson
-```
-
-### 4. Configure environment variables
-
-Create a `.env` file in the project root:
-
-```
-MONGO_URI=<your-mongodb-connection-string>
-SECRET_KEY=<your-secret-key>
-```
-
-### 5. Run the application
-
-```bash
-python app.py
-```
-
-Open your browser at: [http://localhost:8000](http://localhost:8000)
-
----
-
-## Project Structure
-
-```
-project/
-│
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── add_student.html
-│   ├── update_student.html
-│
-├── app.py
-├── requirements.txt
-└── .env
-```
-
----
-
-## Screenshots
-
-**Home Page**
-Lists all students with Edit/Delete buttons.
-- <img width="1902" height="607" alt="image" src="https://github.com/user-attachments/assets/a58a6a6d-4978-4769-8074-232e4d31e69d" />
-
-
-**Add Student**
-Form to add a new student.
-- <img width="1897" height="801" alt="image" src="https://github.com/user-attachments/assets/d65d25c3-ebb5-410a-adb1-e130ad7c5878" />
-
-
-**Update Student**
-Form pre-filled with student details.
-- <img width="1905" height="897" alt="image" src="https://github.com/user-attachments/assets/04febf01-879f-431f-ab07-abcfb993acf1" />
+Create the file: .github/workflows/ci-cd.yml
 
 
 
 ---
 
-## Notes
+## Workflow Steps:
+   
+   This README explains how to set up and use a GitHub Actions CI/CD pipeline for a Flask-based Python web application. The pipeline:
 
-* Make sure MongoDB is running and accessible via the URI in `.env`
-* Delete action includes a confirmation page to prevent accidental deletion
-* Uses `ObjectId` from `bson` to work with MongoDB document IDs
+    1.Installs dependencies
+    
+    2.runs unit tests with pytest
+    
+    3.builds an artifact
+    
+    4.deploys to a staging environment on pushes to the staging branch
 
 ---
 
-## License
+## Environment Secrets:
 
-MIT License
+  Store these secrets in GitHub repository settings → Secrets & variables → Actions (use exact names or update the workflow accordingly):
+
+<img width="1685" height="881" alt="image" src="https://github.com/user-attachments/assets/675a1041-07b0-4b08-a1f4-c807dd395e07" />
+
 
 ---
+
+## How the Workflow Works (step-by-step)
+
+ ## Trigger:
+
+  1. push to staging runs tests + Builds + deploys to staging.
+
+  <img width="1555" height="631" alt="image" src="https://github.com/user-attachments/assets/4f691146-f062-4c82-8faf-28b662fd704c" />
+
+--- 
+  
+  3. push to main runs only tests and Build steps
+
+<img width="1878" height="852" alt="image" src="https://github.com/user-attachments/assets/6816a15c-e74b-4cf3-a7c9-4d269a2a6812" />
+
+          
+---
+
+ ## Test and Build job:
+
+  1.Checks out source.
+  
+  2.Sets up Python.
+  
+  3.Installs dependencies from requirements.txt.
+  
+  4.Runs pytest.
+  
+---
+
+ ## Deploy jobs:
+
+  1.SSH / rsync (example above)
+
+  2.Requires an SSH keypair and a user on the target server.
+
+  3.Use appleboy/ssh-action@v0.1.7
+
+<img width="720" height="778" alt="image" src="https://github.com/user-attachments/assets/2c7cac96-d181-4592-b68a-2aff85139e47" />
+
+
+---
+ 
+ 
+ ## OutCome:
+
+
+<img width="1741" height="855" alt="image" src="https://github.com/user-attachments/assets/7d48ca19-ad9d-4bb7-aaa2-64863140a89d" />
+
+
 
 
 
