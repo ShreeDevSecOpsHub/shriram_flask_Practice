@@ -1,132 +1,85 @@
-# Student Registration System
+# Flask Application - CI/CD Pipelines
 
-A simple **Flask** web application to manage student records with **MongoDB** as the backend database. Users can **add, view, update, and delete** student details.
+A simple Flask web application with automated CI/CD pipelines using **Jenkins** and **GitHub Actions**.
+
+## 📋 Table of Contents
+- [Project Overview](#project-overview)
+- [Application Features](#application-features)
+- [CI/CD Pipelines](#cicd-pipelines)
+  - [1. Jenkins Pipeline](#1-jenkins-pipeline)
+  - [2. GitHub Actions Pipeline](#2-github-actions-pipeline)
+- [Setup & Installation](#setup--installation)
+- [Pipeline Triggers](#pipeline-triggers)
+- [Notifications](#notifications)
+- [Environment Secrets](#environment-secrets)
+- [Deployment](#deployment)
+- [Screenshots](#screenshots)
+
+## Project Overview
+
+This project demonstrates how to implement complete CI/CD pipelines for a Python Flask application using two popular tools:
+- **Jenkins** (Self-hosted CI/CD)
+- **GitHub Actions** (Cloud-native CI/CD)
 
 ---
 
-## Features
+## Application Features
 
-* List all students on the home page
-* Add a new student
-* Update existing student details
-* Delete a student with confirmation
-* Simple and responsive UI using Bootstrap
-
----
-
-## Tech Stack
-
-* **Backend:** Python, Flask
-* **Database:** MongoDB (via Flask-PyMongo)
-* **Frontend:** HTML, Jinja2 templates, Bootstrap 5
-* **Environment Variables:** Managed via `.env` file
+- RESTful API built with Flask
+- Unit testing with unittest/pytest
+- Virtual environment support
+- Easy deployment setup
 
 ---
 
-## Setup Instructions
+## CI/CD Pipelines
 
-### 1. Clone the repository
+### 1. Jenkins Pipeline
+
+**File:** `Jenkinsfile`
+
+**Stages:**
+- **Checkout** – Pulls latest code
+- **Build** – Creates virtual environment and installs dependencies
+- **Test** – Runs unit tests
+- **Deploy to Staging** – Deploys application (on successful build from `main` branch)
+
+**Triggers:** Push to `main` branch
+
+**Notifications:** Email notification on Success / Failure
+
+### 2. GitHub Actions Pipeline
+
+**File:** `.github/workflows/ci-cd.yml`
+
+**Jobs:**
+- Install Dependencies
+- Run Tests
+- Deploy to Staging (`staging` branch)
+- Deploy to Production (on Release tag creation)
+
+---
+
+## Setup & Installation
+
+### Prerequisites
+- Python 3.9+
+- Flask
+- Git
+
+### Local Setup
 
 ```bash
+# Clone the repository
 git clone <your-repo-url>
-cd <repo-folder>
-```
+cd flask-app-cicd
 
-### 2. Create and activate a virtual environment
-
-```bash
+# Create virtual environment
 python -m venv venv
-# Activate venv
-# Windows:
-venv\Scripts\activate
-# Linux / Mac:
-source venv/bin/activate
-```
+source venv/bin/activate    # On Windows: venv\Scripts\activate
 
-### 3. Install dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-**`requirements.txt` example:**
-
-```
-Flask
-Flask-PyMongo
-python-dotenv
-bson
-```
-
-### 4. Configure environment variables
-
-Create a `.env` file in the project root:
-
-```
-MONGO_URI=<your-mongodb-connection-string>
-SECRET_KEY=<your-secret-key>
-```
-
-### 5. Run the application
-
-```bash
-python app.py
-```
-
-Open your browser at: [http://localhost:8000](http://localhost:8000)
-
----
-
-## Project Structure
-
-```
-project/
-│
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── add_student.html
-│   ├── update_student.html
-│
-├── app.py
-├── requirements.txt
-└── .env
-```
-
----
-
-## Screenshots
-
-**Home Page**
-Lists all students with Edit/Delete buttons.
-- <img width="1902" height="607" alt="image" src="https://github.com/user-attachments/assets/a58a6a6d-4978-4769-8074-232e4d31e69d" />
-
-
-**Add Student**
-Form to add a new student.
-- <img width="1897" height="801" alt="image" src="https://github.com/user-attachments/assets/d65d25c3-ebb5-410a-adb1-e130ad7c5878" />
-
-
-**Update Student**
-Form pre-filled with student details.
-- <img width="1905" height="897" alt="image" src="https://github.com/user-attachments/assets/04febf01-879f-431f-ab07-abcfb993acf1" />
-
-
-
----
-
-## Notes
-
-* Make sure MongoDB is running and accessible via the URI in `.env`
-* Delete action includes a confirmation page to prevent accidental deletion
-* Uses `ObjectId` from `bson` to work with MongoDB document IDs
-
----
-
-## License
-
-MIT License
-
----
-
-
+# Run the application
+python run.py
